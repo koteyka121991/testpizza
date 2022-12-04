@@ -2,16 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+// render оображение, отрисовка html взятый из какого либо компонента
+// ctrl +j открытие терминала
+// в js запускать html нельзя
+// JSX – это расширение синтаксиса JavaScript, которое во время компиляции транслируется в обычный JavaScript.
+// npm install sass установка sass
 root.render(
-  <React.StrictMode>
+  
     <App />
-  </React.StrictMode>
+
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
