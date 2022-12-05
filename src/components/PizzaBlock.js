@@ -1,40 +1,49 @@
-import React  from 'react';
+import React from 'react';
 //  Props это объект коорый харнит в себе какие то атрибуты которые мы передаем компонентам
-const PizzaBlock = ({title, price}) => {
-    // деструктуризация это разбор на части, сокращает код
-     // useState(0)-вызов функции useState со значением 0 (0)
+const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
+  // по умолчанию передаем 0 (0) по умолчанию будет выбран первый тип пицы
+  const [activePizzaType, setActivePizzaType]=React.useState(0) 
+  const [activePizzaSize, setActivePizzaSize]=React.useState(0) 
+  //  массив типов пиц
+  const typeNames = ['тонкое', 'традиционное'];
+  // деструктуризация это разбор на части, сокращает код
+  // useState(0)-вызов функции useState со значением 0 (0)
   // [pizzaCount, setPizzaCount] pizzaCount значение состояние которого мы меняем setPizzaCount функция для изменения значения
-//   тут мы изменяем количество заказываемых пиц
-// useState хук для хранения сосояния. Нсли нам нужно хранить просто значения переменых без изменения состояния хук useState не используеться просто присваивааем значения переменой
-// React.useState альтарнативное взятие хука из реакта
-  const [pizzaCount, setPizzaCount]=React.useState(0);
-//   onClickAdd переменая харнит ссылку на эту функцию
-  const onClickAdd = () => {
-    // в реакте мы передали функцию setPizzaCount в () указали занчение которое можно увиличить (pizzaCount +1)
-//    благодаря этой функции произошла перересовка состояния
-    setPizzaCount(pizzaCount +1);
-  }
+  //   тут мы изменяем количество заказываемых пиц
+  // useState хук для хранения сосояния. Нсли нам нужно хранить просто значения переменых без изменения состояния хук useState не используеться просто присваивааем значения переменой
+  // React.useState альтарнативное взятие хука из реакта
+  // const [pizzaCount, setPizzaCount]=React.useState(0);
+  //   onClickAdd переменая харнит ссылку на эту функцию
+  //   const onClickAdd = () => {
+  //     // в реакте мы передали функцию setPizzaCount в () указали занчение которое можно увиличить (pizzaCount +1)
+  // //    благодаря этой функции произошла перересовка состояния
+  //     setPizzaCount(pizzaCount +1);
+  //   }
+
+
   return (
     <div className="pizza-block">
       <img
         className="pizza-block__image"
-        src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+        src={imageUrl}
         alt="Pizza"
       />
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          <li className="active">тонкое</li>
-          <li>традиционное</li>
+          {/* при рендеринге массива типов пиц, значения массива
+           мы берем typeNames (const typeNames = ['тонкое', 'традиционное']). Тип преобразуеться в строку (тонкое, традиционое) */}
+           {/* onClick={()=> setActivePizzaType(typeId) второй более коротки й варинт функции выбора активного клика */}
+          {types.map((typeId) => (<li onClick={()=> setActivePizzaType(typeId)} className={activePizzaType===typeId ? 'active' : ''}>{typeNames[typeId]}</li>))}
         </ul>
         <ul>
-          <li className="active">26 см.,/</li>
-          <li>30 см.</li>
-          <li>40 см.</li>
+          {/* <li className="active">26 см.,/</li> */}         
+          {sizes.map((value, i) => (<li onClick={()=> setActivePizzaSize(i)} className={activePizzaSize===i ? 'active' : ''}>{value} см.</li>))}
+
         </ul>
       </div>
       {/* onClick должен получиь функцию для этого пишем фигурные скобки */}
-      <button onClick={onClickAdd} className="pizza-block__bottom">
+      <button className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
         <div className="button button--outline button--add">
           <svg
@@ -50,7 +59,7 @@ const PizzaBlock = ({title, price}) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>{pizzaCount}</i>
+          <i></i>
         </div>
       </button>
     </div>

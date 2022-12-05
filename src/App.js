@@ -9,13 +9,14 @@
 // реакт создает вирутальное дерево. Реакт сверяет виртуальное дерево с реальным. Реакт точечно делает перересовку этим самым он оптимизирует отрисовку приложения, тем самым производительность приложения растет 
 // в обычном js каждое изменение в дом дереве может затронуть лишнюю память и производительность приложения снижаеться если делать много операций с дом деревом. Реакт не позволяет этого делать
 // реакт оптимизирует этот процесс. Тем самым увеличиваеться скорость работы приложения
-
+import React from 'react';
 import Categories from "./components/Categories";
 import Header from "./components/Header";
 import PizzaBlock from "./components/PizzaBlock";
 import Sort from "./components/Sort";
 import "./scss/app.scss";
-
+import pizzas from './assets/pizza.json'
+console.log(pizzas);
 function App() {
  
   return (
@@ -29,11 +30,17 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
+
+            {pizzas.map((obj)=> (    
+              // сокращеная запись копирования объектов применяеться спред опертор ... {...obj}     
+            <PizzaBlock {...obj}
+                        /* наименование пропса не обязательно должно совпадать с названием объекта. Пример image={obj.imageUrl} */
+            //  title={obj.title} price={obj.price} imageUrl={obj.imageUrl} sizes={obj.sizes} types={obj.types} 
+             />
+             ))}
             {/* числовые значения можно передовать в фигурных скобках {500}  */}
-            <PizzaBlock title='Мексиканская' price={500} />
-            <PizzaBlock />
-            <PizzaBlock />
-            <PizzaBlock />
+            {/* <PizzaBlock title='Мексиканская' price={500} /> */}
+         
           </div>
         </div>
       </div>
