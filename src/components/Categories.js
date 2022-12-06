@@ -27,7 +27,7 @@ const Categories = () => {
         {/* Итерация  — повторение какого-либо действия */}
         {/* вместо (activeIndex === 0) 0 мы передаем индех i activeIndex === i  */}
         {categories.map((value, i) => (
-          <li onClick={() => onClickCategory(i)} className={activeIndex === i ? 'active' : ''}>{value}</li>
+          <li key={value} onClick={() => onClickCategory(i)} className={activeIndex === i ? 'active' : ''}>{value}</li>
         ))}
 
       </ul>

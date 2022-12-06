@@ -16,7 +16,7 @@ import PizzaBlock from "./components/PizzaBlock";
 import Sort from "./components/Sort";
 import "./scss/app.scss";
 import pizzas from './assets/pizza.json'
-console.log(pizzas);
+
 function App() {
  
   return (
@@ -33,7 +33,7 @@ function App() {
 
             {pizzas.map((obj)=> (    
               // сокращеная запись копирования объектов применяеться спред опертор ... {...obj}     
-            <PizzaBlock {...obj}
+            <PizzaBlock key={obj.id} {...obj}
                         /* наименование пропса не обязательно должно совпадать с названием объекта. Пример image={obj.imageUrl} */
             //  title={obj.title} price={obj.price} imageUrl={obj.imageUrl} sizes={obj.sizes} types={obj.types} 
              />

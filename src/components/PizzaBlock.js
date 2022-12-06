@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 //  Props это объект коорый харнит в себе какие то атрибуты которые мы передаем компонентам
 const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
@@ -34,11 +36,12 @@ const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
           {/* при рендеринге массива типов пиц, значения массива
            мы берем typeNames (const typeNames = ['тонкое', 'традиционное']). Тип преобразуеться в строку (тонкое, традиционое) */}
            {/* onClick={()=> setActivePizzaType(typeId) второй более коротки й варинт функции выбора активного клика */}
-          {types.map((typeId) => (<li onClick={()=> setActivePizzaType(typeId)} className={activePizzaType===typeId ? 'active' : ''}>{typeNames[typeId]}</li>))}
+          {types.map((typeId) => (<li key={typeId} onClick={()=> setActivePizzaType(typeId)} className={activePizzaType===typeId ? 'active' : ''}>{typeNames[typeId]}</li>))}
         </ul>
         <ul>
-          {/* <li className="active">26 см.,/</li> */}         
-          {sizes.map((value, i) => (<li onClick={()=> setActivePizzaSize(i)} className={activePizzaSize===i ? 'active' : ''}>{value} см.</li>))}
+        {/* ключи нужны в списках иначе реакт может не корректо отрендерить список
+        при изменении элмента массива напрмер удаление , в ключи не стоит передать индекс          */}
+          {sizes.map((value, i) => (<li key={value} onClick={()=> setActivePizzaSize(i)} className={activePizzaSize===i ? 'active' : ''}>{value} см.</li>))}
 
         </ul>
       </div>
