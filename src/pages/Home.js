@@ -10,22 +10,38 @@ const Home = () => {
   const [pizzas, setPizzas] = React.useState([]);
   // соятояние загрузки пиц с сервера отображение фэйковых пиц
   const [isLoading, setIsLoading] = React.useState(true);
+  // состояния активного индекса категории 
+  const [categoryId, setCategoryId] = React.useState(0);
+  // состояние индекс сортировки
+  const [sortType, setSortType] = React.useState(
+    { name: 'популярности', sort: 'rating' }
+   );
   // useEffect не получает значение, он получе функцию которую он буде вызывать ессли произойдет какой то эфект.
   // useEffect позволяе отлавливать действия которые будет происходить в компоненте
   // сосояние жизненого цикла сосояние когда компонен отрисовался componentDidMount и когда потом он исчизает  , componentWillUnmount
   // useEffect позволяет выполнить какое то дейсвие один раз, если мы его не применим будет бесконечная отрисовка. К примеру бесконечные запросы на сервер
   React.useEffect(() => {
-    fetch('https://639098ef65ff41831118e35d.mockapi.io/items')
+    setIsLoading(true);
+  //  переменые для условий сортировки
+// из свойства мы удаляем минус  если он есть
+  const sortBy = sortType.sort.replace('-','');
+// проверяеть есть в сортировке минус если есть делай сторировку по возрастанию asc если нет то по убыванию desc
+    const order =sortType.sort.includes('-') ? 'asc' : 'desc';   
+    const category = categoryId>0? `category=${categoryId}`:'';
+    // поверка чтобы выводились пицы в категории все (занчение 0) если categoryId>0 то выводим пицы иначе  передаем пустую строку 
+    fetch(`https://639098ef65ff41831118e35d.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`,
+    )
       .then((response) => response.json())
       // return не обязательно в useEffect писать
       .then((json) => {
         setPizzas(json);
         setIsLoading(false);
+
       })
-  // при первом рендере страницы будет перекидвать в верх
-      window.scrollTo(0,0);
+    // при первом рендере страницы будет перекидвать в верх
+    window.scrollTo(0, 0);
     // если передать чо то в массив то то что ты пердал в массив }, []); измениться будет вызываться эта функция (бесконечный запрос)
-  }, []);
+  }, [categoryId, sortType]);
 
   // https://639098ef65ff41831118e35d.mockapi.io/items
   // fetch функция которая делает запросы  
@@ -39,8 +55,9 @@ const Home = () => {
     <>
       <div className='container'>
         <div className="content__top">
-          <Categories />
-          <Sort />
+          {/* categoryId  и sortType прокидываем через пропты в нужный нам компонент */}
+          <Categories value={categoryId} onClickCat={(i) => setCategoryId(i)} />
+          <Sort sortValue={sortType} onClickType={(i) => setSortType(i)} />
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">

@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Categories = () => {
-  const [activeIndex, setActiveIndex] = React.useState(0);
+const Categories = ({value, onClickCat}) => {
+  // const [activeIndex, setActiveIndex] = React.useState(0);
   // рендиринг списка
   const categories = [
     'Все',
@@ -11,10 +11,10 @@ const Categories = () => {
     'Острые',
     'Закрытые'
   ]
-  const onClickCategory = (index) => {
-    // функция клика по категориям
-    setActiveIndex(index);
-  }
+  // const onClickCategory = (index) => {
+  //   // функция клика по категориям
+  //   setActiveIndex(index);
+  // }
   return (
     <div className="categories">
       <ul>
@@ -26,8 +26,8 @@ const Categories = () => {
         {/* index i номер элимента начинаеться с 0 */}
         {/* Итерация  — повторение какого-либо действия */}
         {/* вместо (activeIndex === 0) 0 мы передаем индех i activeIndex === i  */}
-        {categories.map((value, i) => (
-          <li key={value} onClick={() => onClickCategory(i)} className={activeIndex === i ? 'active' : ''}>{value}</li>
+        {categories.map((catName, i) => (
+          <li key={catName} onClick={() => onClickCat(i)} className={value === i ? 'active' : ''}>{catName}</li>
         ))}
 
       </ul>

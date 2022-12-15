@@ -3,27 +3,29 @@
 // блогодря стэйту мы ожим наш компонент, буду проиходить манипуляции с ним
 import React from 'react';
 
-const Sort = () => {
+const Sort = ({onClickType, sortValue }) => {
   // false по умолчанию, так как мы хоти в начале скрыть элимет сортировки попап
   const [openPopup, setOpenPopup] = React.useState(false);
   // state для сортировки 0 закинули значение что бы отображался активный первый элимент
-  const [selected, setSelected] = React.useState(0);
+  // const [selected, setSelected] = React.useState(0);
   const list = [
-    'популярности',
-    'цене',
-    'алфавиту'
+    {name: 'популярности (DESC)', sort: 'rating'},
+    {name: 'популярности(ASC)', sort: '-rating'},
+    {name: 'цене (DESC)', sort: 'price'},
+    {name: 'цене (ASC)', sort: '-price'},
+    {name: 'алфавиту (DESC)', sort: 'title'},
+    {name: 'алфавиту (ASC)', sort: '-title'}
+    
   ]
   // перменая которой присвоили значение выбороно элимента списка 
-  const sortName = list[selected];
+  // const sortName = list[sortValue].name;
   const onClickListItem = (i) => {
     // функция когда мы выбираем какое то значение попап должен скрываться
     // выбери какой то пункт
-    setSelected(i);
+    onClickType(i);
     // потом скройся
     setOpenPopup(false);
   }
-
-  
 
   return (
     <div className="sort">
@@ -43,7 +45,7 @@ const Sort = () => {
         <b>Сортировка по:</b>
         {/* !openPopup !переварачивает знчение (не) */}
         {/* окрываем попап */}
-        <span onClick={() => setOpenPopup(!openPopup)}>{sortName}</span>
+        <span onClick={() => setOpenPopup(!openPopup)}>{sortValue.name}</span>
       </div>
       {/* Логическое И (&&) вычисляет операнды(значения) слева направо, возвращая сразу 
               значение первого попавшего ложноподобного операнда; если все значения 
@@ -60,9 +62,10 @@ const Sort = () => {
         <div className="sort__popup">
           <ul>
             {/* выбор сортировки */}
-          {list.map((item,i) => (
-          <li key={item} onClick={() => onClickListItem(i)} className={selected === i ? 'active' : ''}>{item}</li>
-        ))}
+            {list.map((obj, i) => (
+              <li key={i} onClick={() => onClickListItem(obj)} 
+              className={sortValue.sortType === obj.sortType ? 'active' : ''}>{obj.name}</li>
+            ))}
             {/* <li className="active">популярности</li>
             <li>цене</li>
             <li>алфавиту</li> */}
