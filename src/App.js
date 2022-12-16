@@ -11,6 +11,10 @@
 // в обычном js каждое изменение в дом дереве может затронуть лишнюю память и производительность приложения снижаеться если делать много операций с дом деревом. Реакт не позволяет этого делать
 // реакт оптимизирует этот процесс. Тем самым увеличиваеться скорость работы приложения
 // https://cssgrid-generator.netlify.app/ для верстки полезный ресурс
+// при помощи контекста можно создать глобальное значение и использовать это значение на разных компонентах
+// Prop Drilling процес прокидывания пропсов от основного компонента к дочернему через компоненты которые находяться между основным и конечным
+
+
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Header from "./components/Header";
@@ -22,17 +26,17 @@ import "./scss/app.scss";
 
 
 function App() {
-
-
+const [searchValue, setSearchValue]=React.useState('');
+console.log(searchValue, 'input changed')
   return (
     <div className="wrapper">
-      <Header />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue}  />
       <div className="content">
     
           <Routes>
             <Route
               path="/"
-              element={<Home />}
+              element={<Home searchValue={searchValue} setSearchValue={setSearchValue}/>}
             />
             <Route
               path="/cart"

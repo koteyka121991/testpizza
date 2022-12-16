@@ -2,7 +2,8 @@
 // тажке можно сделать через импорт import logo from '../img/pizza-logo.svg' помещая в папку assets(в assets обычно храняться статичные данные) и указываем название элимента в {}{logo} 
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/pizza-logo.svg'
-const Header = () => {
+import Search from './search/Search';
+const Header = ( {searchValue, setSearchValue}) => {
 
   return (
     <div className="header">
@@ -16,7 +17,7 @@ const Header = () => {
             </div>
           </div>
         </Link>
-
+<Search searchValue={searchValue} setSearchValue={setSearchValue} />
 
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
