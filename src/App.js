@@ -1,4 +1,5 @@
 
+
 // это реактовский компонент, обязательно называем с большой буквы
 // функциональный компонент возвращает html разметку(jsx), без возврата это не функциональный компонент
 // внутри {} должен быть написан какой то код, перменая jsx вернет содержимое кода
@@ -24,19 +25,21 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import "./scss/app.scss";
 
+// используем реакт контекс помогает избежать пропс дрилинг (прокидыание пропсов  каждый компонент  дереве компонентов до нужного компонента)
+export const AppContext = React.createContext();
 
 function App() {
 const [searchValue, setSearchValue]=React.useState('');
 console.log(searchValue, 'input changed')
   return (
     <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={setSearchValue}  />
-      <div className="content">
-    
+      <AppContext.Provider value={{searchValue, setSearchValue}} >
+      <Header />
+      <div className="content">    
           <Routes>
             <Route
               path="/"
-              element={<Home searchValue={searchValue} setSearchValue={setSearchValue}/>}
+              element={<Home />}
             />
             <Route
               path="/cart"
@@ -52,6 +55,7 @@ console.log(searchValue, 'input changed')
 
       
       </div>
+      </AppContext.Provider>
     </div>
   );
 }

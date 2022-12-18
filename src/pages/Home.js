@@ -6,8 +6,10 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Sort from '../components/Sort'
 import ReactPaginate from 'react-paginate';
 import Pagination from '../components/pagination/Pagination';
+import { AppContext } from '../App';
 
-const Home = ({searchValue}) => {
+const Home = () => {
+  const {searchValue} = React.useContext(AppContext);
   // получение пицц с сервера
   const [pizzas, setPizzas] = React.useState([]);
   // соятояние загрузки пиц с сервера отображение фэйковых пиц
