@@ -1,29 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-
+// состояния компонента
 const initialState = {
-  value: 0,
-}
+  categoryId: 0,
+  sort: { name: 'популярности', sortProperty: 'rating' }
+};
 
-export const filterSlice = createSlice({
-  name: 'filter',
+// создаем сам slice тут будет логика обработки данных
+const filterSlice = createSlice({
+  // название слайса
+  name: 'filters',
+  // состояние слайса
   initialState,
+  // методы , экшены отвечающие за сохранение сортировки и фильтрации
   reducers: {
-    increment: (state) => {    
-      state.value += 1
+    // в объекъектах функция называеться метод
+    // функция хочет изменить state. При вызове диспача получаем стэйт(state) и действие (action)
+    setCategoryId(state, action) {
+      state.categoryId = action.payload;
     },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
-    },
-  },
-})
+    setSort(state, action) {
+      state.sort=action.payload;
+    }
+  }
 
-// useDispatch хук который изменяет что-то
+});
+export const { setCategoryId, setSort } = filterSlice.actions;
 
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
-
-export default counterSlice.reducer
+export default filterSlice.reducer;

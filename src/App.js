@@ -17,6 +17,7 @@
 // редакс это нечто схожее с контекстом только лучше. При использовании контекста перересовка происходит всего что указано в контексте(во всех компонентаъ к которым привязан контекст)
 // При исапользовании редакса значительно уменьшаетья количество кода по сравнению с контекстом, также перересока будет только в том компоненте  котором проиходи изменение , в отличии о контекса 
 // редакс рабоает при помощи контекста
+// npm install @reduxjs/toolkit react-redux инсталяции редакс
 
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -26,13 +27,12 @@ import Cart from './pages/Cart';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import "./scss/app.scss";
-
 // используем реакт контекс помогает избежать пропс дрилинг (прокидыание пропсов  каждый компонент  дереве компонентов до нужного компонента)
 export const AppContext = React.createContext();
 
 function App() {
 const [searchValue, setSearchValue]=React.useState('');
-console.log(searchValue, 'input changed')
+
   return (
     <div className="wrapper">
       <AppContext.Provider value={{searchValue, setSearchValue}} >

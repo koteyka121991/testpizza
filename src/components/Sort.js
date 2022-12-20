@@ -2,27 +2,33 @@
 // imr сокращеный импорт реакта
 // блогодря стэйту мы ожим наш компонент, буду проиходить манипуляции с ним
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { setSort } from '../redux/slices/filterSlice';
+const list = [
+  {name: 'популярности (DESC)', sortProperty: 'rating'},
+  {name: 'популярности(ASC)', sortProperty: '-rating'},
+  {name: 'цене (DESC)', sortProperty: 'price'},
+  {name: 'цене (ASC)', sortProperty: '-price'},
+  {name: 'алфавиту (DESC)', sortProperty: 'title'},
+  {name: 'алфавиту (ASC)', sortProperty: '-title'}
+  
+]
+const Sort = () => {
+  const dispatch = useDispatch();
+  const sort = useSelector((state)=>state.filter.sort);
 
-const Sort = ({onClickType, sortValue }) => {
   // false по умолчанию, так как мы хоти в начале скрыть элимет сортировки попап
   const [openPopup, setOpenPopup] = React.useState(false);
   // state для сортировки 0 закинули значение что бы отображался активный первый элимент
   // const [selected, setSelected] = React.useState(0);
-  const list = [
-    {name: 'популярности (DESC)', sort: 'rating'},
-    {name: 'популярности(ASC)', sort: '-rating'},
-    {name: 'цене (DESC)', sort: 'price'},
-    {name: 'цене (ASC)', sort: '-price'},
-    {name: 'алфавиту (DESC)', sort: 'title'},
-    {name: 'алфавиту (ASC)', sort: '-title'}
-    
-  ]
+
   // перменая которой присвоили значение выбороно элимента списка 
   // const sortName = list[sortValue].name;
-  const onClickListItem = (i) => {
+  const onClickListItem = (obj) => {
     // функция когда мы выбираем какое то значение попап должен скрываться
     // выбери какой то пункт
-    onClickType(i);
+    // onClickType(i);
+    dispatch(setSort(obj));
     // потом скройся
     setOpenPopup(false);
   }
@@ -45,7 +51,7 @@ const Sort = ({onClickType, sortValue }) => {
         <b>Сортировка по:</b>
         {/* !openPopup !переварачивает знчение (не) */}
         {/* окрываем попап */}
-        <span onClick={() => setOpenPopup(!openPopup)}>{sortValue.name}</span>
+        <span onClick={() => setOpenPopup(!openPopup)}>{sort.name}</span>
       </div>
       {/* Логическое И (&&) вычисляет операнды(значения) слева направо, возвращая сразу 
               значение первого попавшего ложноподобного операнда; если все значения 
@@ -64,7 +70,7 @@ const Sort = ({onClickType, sortValue }) => {
             {/* выбор сортировки */}
             {list.map((obj, i) => (
               <li key={i} onClick={() => onClickListItem(obj)} 
-              className={sortValue.sortType === obj.sortType ? 'active' : ''}>{obj.name}</li>
+              className={sort.sortType === obj.sortType ? 'active' : ''}>{obj.name}</li>
             ))}
             {/* <li className="active">популярности</li>
             <li>цене</li>
