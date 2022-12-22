@@ -1,24 +1,51 @@
-import React from 'react';
+// установили библиотеку npm i lodash.debounce
+import debounce from 'lodash.debounce';
+import React, { useCallback } from 'react';
 import style from './search.module.scss'
 import close from '../../assets/img/free-icon-font-cross-3917759.svg'
 import { AppContext } from '../../App';
 
 // инпуты в реакте контролируемые 
 const Search = () => {
-     const {searchValue, setSearchValue} = React.useContext(AppContext);
+    const [value, setValue] = React.useState('')
+    const { setSearchValue } = React.useContext(AppContext);
+    const inputRef = React.useRef();
+ 
+    const onClickClear = () => {
+        // первое действие очищает инпут
+        setSearchValue('');
+        setValue('');
+        // делает фокус   
+        inputRef.current.focus();
+    }
+     // есть проблема debounce теряет ссылку на функцию он пересздает ее из за этого нормально не работает
+    // для этого пишем сохрани ссылку на функцию. Используем useCallback.
+    // useCallback похожа на useEffect но useEffect не возвращает функцию
+    const updateSearchValue =React.useCallback(
+        debounce((str)=>{           
+            setSearchValue(str)
+        }, 500),
+        [],); 
+  
+
+    const onChangeInput= (event)=> {
+        setValue(event.target.value);
+        updateSearchValue(event.target.value);
+    }
     return (
         <div className={style.root}>
             <svg className={style.icon} xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512"><path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z" /></svg>
             <input
+                ref={inputRef}
                 // рекомендуеться хранить в value то что меняет инпут
-                value={searchValue}
-                onChange={(event) => { setSearchValue(event.target.value) }}
+                value={value}
+                onChange={onChangeInput}
                 className={style.input}
                 placeholder='Поиск...' />
-            {searchValue && (
+            {value && (
                 // очитска поиска 
-                <img onClick={()=>{setSearchValue('')}}
-                 className={style.clearInput} width="25" src={close}
+                <img onClick={onClickClear}
+                    className={style.clearInput} width="25" src={close}
                     alt="input close" />
             )
             }
