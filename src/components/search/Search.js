@@ -1,6 +1,6 @@
 // установили библиотеку npm i lodash.debounce
 import debounce from 'lodash.debounce';
-import React, { useCallback } from 'react';
+import React from 'react';
 import style from './search.module.scss'
 import close from '../../assets/img/free-icon-font-cross-3917759.svg'
 import { AppContext } from '../../App';
