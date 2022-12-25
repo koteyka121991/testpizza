@@ -1,9 +1,11 @@
 // хранилище редакс
 import { configureStore } from '@reduxjs/toolkit'
 import filter from './slices/filterSlice'
+import cart from './slices/cartSlice'
 // переменая store это редакс хранилище
 export const store = configureStore({
   reducer: {
-    filter
+    filter, 
+    cart
   },
 })

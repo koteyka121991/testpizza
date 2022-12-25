@@ -1,8 +1,12 @@
 
 
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from '../../redux/slices/cartSlice';
 //  Props это объект коорый харнит в себе какие то атрибуты которые мы передаем компонентам
-const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
+const PizzaBlock = ({id, title, price, imageUrl, sizes, types }) => {
+  const dispatch = useDispatch();
+  // const {items, totalPrice } = useSelector(state=>state.cart);
   // по умолчанию передаем 0 (0) по умолчанию будет выбран первый тип пицы
   const [activePizzaType, setActivePizzaType]=React.useState(0) 
   const [activePizzaSize, setActivePizzaSize]=React.useState(0) 
@@ -22,7 +26,17 @@ const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
   //     setPizzaCount(pizzaCount +1);
   //   }
 
-
+  const onClickAdd =()=> {
+const item= {
+  id,
+  title,
+  price,
+  imageUrl,
+  type:activePizzaType,
+  size:activePizzaSize
+};
+dispatch(addItem(item))
+  }
   return (
     <div className='pizza-block__wrapper'>
     <div className="pizza-block">
@@ -47,7 +61,7 @@ const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
         </ul>
       </div>
       {/* onClick должен получиь функцию для этого пишем фигурные скобки */}
-      <button className="pizza-block__bottom">
+      <button onClick={onClickAdd} className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
         <div className="button button--outline button--add">
           <svg

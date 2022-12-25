@@ -16,6 +16,8 @@ export const list = [
 const Sort = () => {
   const dispatch = useDispatch();
   const sort = useSelector((state)=>state.filter.sort);
+// реализуем логику скрытия попапа
+const sortRef = React.useRef();
 
   // false по умолчанию, так как мы хоти в начале скрыть элимет сортировки попап
   const [openPopup, setOpenPopup] = React.useState(false);
@@ -33,8 +35,21 @@ const Sort = () => {
     setOpenPopup(false);
   }
 
+  // обработчик клика на весь body
+React.useEffect(()=>{
+const handleClickOutside =(event)=> {
+  if(!event.path.includes(sortRef.current)){
+    setOpenPopup(false);    
+  }
+}
+document.body.addEventListener('click', handleClickOutside);
+return () => {
+  document.body.removeEventListener('click', handleClickOutside);
+}
+},[])
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"

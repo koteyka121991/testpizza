@@ -1,10 +1,12 @@
 // если мы хотим передать какой то элимент напрмер картинку на пряму пишем полностью путь и помещаем элимент в папку Public
 // тажке можно сделать через импорт import logo from '../img/pizza-logo.svg' помещая в папку assets(в assets обычно храняться статичные данные) и указываем название элимента в {}{logo} 
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/pizza-logo.svg'
 import Search from './search/Search';
-const Header = ( {searchValue, setSearchValue}) => {
 
+const Header = ( {searchValue, setSearchValue}) => {
+const {items, totalPrice } = useSelector(state=>state.cart);
   return (
     <div className="header">
       <div className="container">
@@ -20,7 +22,7 @@ const Header = ( {searchValue, setSearchValue}) => {
 <Search searchValue={searchValue} setSearchValue={setSearchValue} />
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>520 ₽</span>
+            <span>{totalPrice}</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -51,7 +53,7 @@ const Header = ( {searchValue, setSearchValue}) => {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>3</span>
+            <span>{items.length}</span>
           </Link>
         </div>
       </div>
