@@ -9,7 +9,7 @@ import Sort, { list } from '../components/Sort';
 import Pagination from '../components/pagination/Pagination';
 import { AppContext } from '../App';
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import axios from 'axios';
+import { fetchPizzas } from '../redux/slices/pizzasSlice';
 
 
 
@@ -19,10 +19,11 @@ const Home = () => {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
   const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
+  const {items, status} = useSelector((state) => state.pizzas);
   // const sortType = sort.sortProperty;
   const { searchValue } = React.useContext(AppContext);
-  const [pizzas, setPizzas] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+
+  // const [isLoading, setIsLoading] = React.useState(true);
   const onClickCategory = (i) => {
     dispatch(setCategoryId(i));
   }
@@ -31,19 +32,32 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   }
 
-  const fetchPizzas = () => {
-    setIsLoading(true);
+  const getPizzas = async () => {
+    // setIsLoading(true);
     const sortBy = sort.sortProperty.replace('-', '');
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
-    axios.get(`https://639098ef65ff41831118e35d.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-      .then(response => {
-        setPizzas(response.data);
-        setIsLoading(false);
-      })
+    // ассинхроный запрос на бэкенд
+    // Синхронно: скрипт останавливается и ждет, пока сервер отправит ответ, прежде чем продолжить.
+    // Асинхронно: скрипт разрешает обработку страницы и обрабатывает ответ, когда и если он придет.
+    // await axios.get(`https://639098ef65ff41831118e35d.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+    //   .then(response => {
+    //     setPizzas(response.data);
+    //     setIsLoading(false);
+    //   })
 
-  }
+    // promise преврщает синхроный код в асинхроный. Ахион возвращает промис 
+    // отлавливаем ошибки
+   
+      dispatch(fetchPizzas({
+        currentPage, category, sortBy, order, search
+      }),
+      );
+      window.scrollTo(0, 0)
+    } ;
+    
+
 
   React.useEffect(() => {
     if (window.location.search) {
@@ -68,20 +82,21 @@ const Home = () => {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-  }, [categoryId,  sort.sortProperty, currentPage])
+  }, [categoryId, sort.sortProperty, currentPage])
 
 
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-    if (!isSearch.current) {
-      fetchPizzas();
-    }
-    isSearch.current = false;
+    // window.scrollTo(0, 0);
+    // if (!isSearch.current) 
+    // {
+      getPizzas();
+    // }
+    // isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
 
 
-  const pizzaItems = pizzas.filter(obj => {
+  const pizzaItems = items.filter(obj => {
     if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
       return true;
     }
@@ -101,12 +116,15 @@ const Home = () => {
           />
         </div>
         <h2 className="content__title">Все пиццы</h2>
-        <div className="content__items">
+        {
+          status === 'error' ? <div>Ошибка загрузки</div> : <div className="content__items">
           {
-            isLoading ? sceleton
+            status ==='Loading' ? sceleton
               : pizzaItems
           }
         </div>
+        }
+        
         <Pagination currentPage={currentPage} onChangePage={onChangePage} />
       </div>
     </>

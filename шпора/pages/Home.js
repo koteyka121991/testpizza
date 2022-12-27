@@ -1,3 +1,4 @@
+// async/awayt специальный синтакси для работы с промисами
 import React from 'react';
 import Categories from "../components/Categories";
 // при перемещении компонента можно файл переменовать в index и тогда вэб пак найдет его в указаной пакпе 
@@ -28,7 +29,7 @@ const Home = () => {
     // );
   const { searchValue } = React.useContext(AppContext);
   // получение пицц с сервера
-  const [pizzas, setPizzas] = React.useState([]);
+  // const [pizzas, setPizzas] = React.useState([]);
   // соятояние загрузки пиц с сервера отображение фэйковых пиц
   const [isLoading, setIsLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
