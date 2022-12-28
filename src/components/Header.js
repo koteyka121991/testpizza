@@ -1,13 +1,16 @@
 // если мы хотим передать какой то элимент напрмер картинку на пряму пишем полностью путь и помещаем элимент в папку Public
 // тажке можно сделать через импорт import logo from '../img/pizza-logo.svg' помещая в папку assets(в assets обычно храняться статичные данные) и указываем название элимента в {}{logo} 
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/img/pizza-logo.svg'
+import { selectCart } from '../redux/slices/cartSlice';
 import Search from './search/Search';
 
 const Header = ( {searchValue, setSearchValue}) => {
-const {items, totalPrice } = useSelector(state=>state.cart);
+const {items, totalPrice } = useSelector(selectCart);
 const totalCount =items.reduce((sum, item)=> sum+item.count, 0);
+const location = useLocation();
+console.log(location);
   return (
     <div className="header">
       <div className="container">
@@ -22,7 +25,7 @@ const totalCount =items.reduce((sum, item)=> sum+item.count, 0);
         </Link>
 <Search searchValue={searchValue} setSearchValue={setSearchValue} />
         <div className="header__cart">
-          <Link to="/cart" className="button button--cart">
+         {location.pathname !=='/cart' && <Link to="/cart" className="button button--cart">
             <span>{totalPrice}</span>
             <div className="button__delimiter"></div>
             <svg
@@ -55,7 +58,7 @@ const totalCount =items.reduce((sum, item)=> sum+item.count, 0);
               />
             </svg>
             <span>{totalCount}</span>
-          </Link>
+          </Link>}
         </div>
       </div>
     </div>

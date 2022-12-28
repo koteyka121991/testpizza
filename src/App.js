@@ -22,43 +22,44 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Header from "./components/Header";
+import MainLayout from './components/MainLayout';
 import Cart from './pages/Cart';
+import FullPizza from './pages/FullPizza';
 // при перемещении компонента можно файл переменовать в index и тогда вэб пак найдет его в указаной пакпе 
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import "./scss/app.scss";
-// используем реакт контекс помогает избежать пропс дрилинг (прокидыание пропсов  каждый компонент  дереве компонентов до нужного компонента)
-export const AppContext = React.createContext();
 
 function App() {
-const [searchValue, setSearchValue]=React.useState('');
 
   return (
-    <div className="wrapper">
-      <AppContext.Provider value={{searchValue, setSearchValue}} >
-      <Header />
-      <div className="content">    
-          <Routes>
-            <Route
-              path="/"
-              element={<Home />}
-            />
-            <Route
-              path="/cart"
-              element={<Cart />}
-            />
-            <Route
-              //  path="*" * ставим чтобы сделать переход на страницу если ни с чем не совпадает 
-              path="*"
-              element={<NotFound />}
-            />
 
-          </Routes>
 
-      
-      </div>
-      </AppContext.Provider>
-    </div>
+    <Routes>
+      <Route path='/' element={<MainLayout />}>
+        <Route
+          path=""
+          element={<Home />}
+        />
+        <Route
+          path="cart"
+          element={<Cart />}
+        />
+        <Route
+          //  после : ставим динамический парметр ссылки
+          path="pizza/:id"
+          element={<FullPizza />}
+        />
+        <Route
+          //  path="*" * ставим чтобы сделать переход на страницу если ни с чем не совпадает 
+          path="*"
+          element={<NotFound />}
+        />
+
+      </Route>
+
+    </Routes>
+
   );
 }
 

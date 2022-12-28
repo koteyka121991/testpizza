@@ -1,8 +1,10 @@
+// thunkAPI доболнительная утилитиа к createAsyncThunk
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
 // делаем асинхроный экшен
 export const fetchPizzas = createAsyncThunk(
   'pizza/fetchPizzasStatus',
+  // thunkAPI прикручивает свою логику редакса. Позволяет увидить более расширеный payload
   async (params) => {
     const { currentPage, category, sortBy, order, search } = params;
     const { data } = await axios.get(
@@ -47,6 +49,8 @@ const pizzasSlice = createSlice({
   }
 
 });
+
+export const selectPizzasData=(state) => state.pizzas
 export const { setItems } = pizzasSlice.actions;
 
 export default pizzasSlice.reducer;

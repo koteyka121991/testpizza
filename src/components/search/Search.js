@@ -1,19 +1,20 @@
 // установили библиотеку npm i lodash.debounce
 import debounce from 'lodash.debounce';
 import React from 'react';
-import style from './search.module.scss'
-import close from '../../assets/img/free-icon-font-cross-3917759.svg'
-import { AppContext } from '../../App';
+import style from './search.module.scss';
+import close from '../../assets/img/free-icon-font-cross-3917759.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filterSlice';
 
 // инпуты в реакте контролируемые 
 const Search = () => {
-    const [value, setValue] = React.useState('')
-    const { setSearchValue } = React.useContext(AppContext);
+    const dispatch = useDispatch();    
+    const [value, setValue] = React.useState('');    
     const inputRef = React.useRef();
  
     const onClickClear = () => {
         // первое действие очищает инпут
-        setSearchValue('');
+        dispatch (setSearchValue(''));
         setValue('');
         // делает фокус   
         inputRef.current.focus();
@@ -23,7 +24,7 @@ const Search = () => {
     // useCallback похожа на useEffect но useEffect не возвращает функцию
     const updateSearchValue =React.useCallback(
         debounce((str)=>{           
-            setSearchValue(str)
+            dispatch (setSearchValue(str));
         }, 500),
         [],); 
   

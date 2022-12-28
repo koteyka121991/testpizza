@@ -1,15 +1,14 @@
 import React from 'react';
 import qs from 'qs';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Categories from "../components/Categories";
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Sort, { list } from '../components/Sort';
 import Pagination from '../components/pagination/Pagination';
-import { AppContext } from '../App';
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
+import { fetchPizzas, selectPizzasData } from '../redux/slices/pizzasSlice';
 
 
 
@@ -18,10 +17,10 @@ const Home = () => {
   const dispatch = useDispatch();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
-  const {items, status} = useSelector((state) => state.pizzas);
+  const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
+  const { items, status } = useSelector(selectPizzasData);
   // const sortType = sort.sortProperty;
-  const { searchValue } = React.useContext(AppContext);
+
 
   // const [isLoading, setIsLoading] = React.useState(true);
   const onClickCategory = (i) => {
@@ -49,15 +48,13 @@ const Home = () => {
 
     // promise преврщает синхроный код в асинхроный. Ахион возвращает промис 
     // отлавливаем ошибки
-   
-      dispatch(fetchPizzas({
-        currentPage, category, sortBy, order, search
-      }),
-      );
-      window.scrollTo(0, 0)
-    } ;
-    
 
+    dispatch(fetchPizzas({
+      currentPage, category, sortBy, order, search
+    }),
+    );
+    window.scrollTo(0, 0)
+  };
 
   React.useEffect(() => {
     if (window.location.search) {
@@ -89,7 +86,7 @@ const Home = () => {
     // window.scrollTo(0, 0);
     // if (!isSearch.current) 
     // {
-      getPizzas();
+    getPizzas();
     // }
     // isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
@@ -102,10 +99,10 @@ const Home = () => {
     }
     return false;
   }
-  ).map(obj => <PizzaBlock
-    key={obj.id} {...obj} />);
+  ).map(obj => <Link key={obj.id} to={`/pizza/${obj.id}`}> <PizzaBlock
+    {...obj} /></Link>);
   const sceleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-
+  
   return (
     <>
       <div className='container'>
@@ -118,13 +115,13 @@ const Home = () => {
         <h2 className="content__title">Все пиццы</h2>
         {
           status === 'error' ? <div>Ошибка загрузки</div> : <div className="content__items">
-          {
-            status ==='Loading' ? sceleton
-              : pizzaItems
-          }
-        </div>
+            {
+              status === 'Loading' ? sceleton
+                : pizzaItems
+            }
+          </div>
         }
-        
+
         <Pagination currentPage={currentPage} onChangePage={onChangePage} />
       </div>
     </>
