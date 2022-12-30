@@ -2,8 +2,12 @@ import axios from 'axios';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const FullPizza = () => {
-    const [pizza, setPizza] = React.useState();
+const FullPizza:React.FC = () => {
+    const [pizza, setPizza] = React.useState<{
+        title:string;
+        imageUrl:string;
+      price:number;
+    }>();
     const navigate = useNavigate();
     // Хук useParams возвращает объект пар ключ/значение динамических 
     // параметров из текущего URL-адреса, которые были сопоставлены <Route path>
@@ -24,7 +28,7 @@ const FullPizza = () => {
         fetchPizza();
     }, [])
     if (!pizza) {
-        return 'загрузка...'
+        return <>'загрузка...'</>
     }
     return (
         <div className='container'>
