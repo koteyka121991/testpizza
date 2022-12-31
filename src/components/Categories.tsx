@@ -1,21 +1,23 @@
-
 import React from 'react';
 
 type CategoriesProps = {
-  value: number
-  onClickCat: any
+  value: number;
+  onClickCat: (i: number)=> void;
+  getCategories:(categories: string[]) => void;
 } ;
-const Categories: React.FC<CategoriesProps> = ({value, onClickCat}) => {
+// рендиринг списка
+const categories = [
+  'Все',
+  'Мясные',
+  'Вегетарианская',
+  'Гриль',
+  'Острые',
+  'Закрытые'
+]
+const Categories: React.FC<CategoriesProps> = ({value, onClickCat, getCategories}) => {
   // const [activeIndex, setActiveIndex] = React.useState(0);
-  // рендиринг списка
-  const categories = [
-    'Все',
-    'Мясные',
-    'Вегетарианская',
-    'Гриль',
-    'Острые',
-    'Закрытые'
-  ]
+  
+  getCategories(categories);
   // const onClickCategory = (index) => {
   //   // функция клика по категориям
   //   setActiveIndex(index);

@@ -110,7 +110,7 @@ const Home: React.FC = () => {
       <div className='container'>
         <div className="content__top">
 
-          <Categories value={categoryId} onClickCat={onClickCategory} />
+          <Categories value={categoryId} onClickCat={onClickCategory} getCategories= {()=>{}} />
           <Sort
           />
         </div>

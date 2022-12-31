@@ -4,7 +4,7 @@ import style from './pagination.module.scss';
 
 type PaginationProps = {
   currentPage: number;
-  onChangePage: any;
+  onChangePage: (page: number)=> void;
 } ;
 
 const Pagination:React.FC<PaginationProps> = ({currentPage, onChangePage}) => {
