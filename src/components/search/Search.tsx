@@ -10,14 +10,19 @@ import { setSearchValue } from '../../redux/slices/filterSlice';
 const Search = () => {
     const dispatch = useDispatch();    
     const [value, setValue] = React.useState('');    
-    const inputRef = React.useRef();
+    const inputRef = React.useRef<HTMLInputElement>(null);
  
     const onClickClear = () => {
         // первое действие очищает инпут
         dispatch (setSearchValue(''));
         setValue('');
         // делает фокус   
-        inputRef.current.focus();
+        // if (inputRef.current){
+        //     inputRef.current.focus();
+        // }
+        // ?. оператор опциональной последовательности для ts
+        inputRef.current?.focus();
+       
     }
      // есть проблема debounce теряет ссылку на функцию он пересздает ее из за этого нормально не работает
     // для этого пишем сохрани ссылку на функцию. Используем useCallback.
@@ -29,7 +34,7 @@ const Search = () => {
         [],); 
   
 
-    const onChangeInput= (event)=> {
+    const onChangeInput= (event:any)=> {
         setValue(event.target.value);
         updateSearchValue(event.target.value);
     }

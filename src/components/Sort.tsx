@@ -4,7 +4,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { selectSort, setSort } from '../redux/slices/filterSlice';
-export const list = [
+
+type ListItem = {
+  name: string;
+  sortProperty: string;
+} ;
+
+export const list: ListItem[]=[
   {name: 'популярности (DESC)', sortProperty: 'rating'},
   {name: 'популярности(ASC)', sortProperty: '-rating'},
   {name: 'цене (DESC)', sortProperty: 'price'},
@@ -17,7 +23,7 @@ const Sort = () => {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
 // реализуем логику скрытия попапа
-const sortRef = React.useRef();
+const sortRef = React.useRef<HTMLDivElement>(null);
 
   // false по умолчанию, так как мы хоти в начале скрыть элимет сортировки попап
   const [openPopup, setOpenPopup] = React.useState(false);
@@ -26,7 +32,7 @@ const sortRef = React.useRef();
 
   // перменая которой присвоили значение выбороно элимента списка 
   // const sortName = list[sortValue].name;
-  const onClickListItem = (obj) => {
+  const onClickListItem = (obj:ListItem) => {
     // функция когда мы выбираем какое то значение попап должен скрываться
     // выбери какой то пункт
     // onClickType(i);
@@ -37,7 +43,7 @@ const sortRef = React.useRef();
 
   // обработчик клика на весь body
 React.useEffect(()=>{
-const handleClickOutside =(event)=> {
+const handleClickOutside =(event: any)=> {
   if(!event.path.includes(sortRef.current)){
     setOpenPopup(false);    
   }
@@ -85,7 +91,7 @@ return () => {
             {/* выбор сортировки */}
             {list.map((obj, i) => (
               <li key={i} onClick={() => onClickListItem(obj)} 
-              className={sort.sortType === obj.sortType ? 'active' : ''}>{obj.name}</li>
+              className={sort.sortProperty === obj.sortProperty ? 'active' : ''}>{obj.name}</li>
             ))}
             {/* <li className="active">популярности</li>
             <li>цене</li>

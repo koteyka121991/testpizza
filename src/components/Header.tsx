@@ -6,11 +6,10 @@ import logo from '../assets/img/pizza-logo.svg'
 import { selectCart } from '../redux/slices/cartSlice';
 import Search from './search/Search';
 
-const Header = ( {searchValue, setSearchValue}) => {
+const Header: React.FC = ( ) => {
 const {items, totalPrice } = useSelector(selectCart);
-const totalCount =items.reduce((sum, item)=> sum+item.count, 0);
+const totalCount =items.reduce((sum:number, item:any)=> sum+item.count, 0);
 const location = useLocation();
-console.log(location);
   return (
     <div className="header">
       <div className="container">
@@ -23,7 +22,9 @@ console.log(location);
             </div>
           </div>
         </Link>
-<Search searchValue={searchValue} setSearchValue={setSearchValue} />
+<Search
+//  searchValue={searchValue} setSearchValue={setSearchValue} 
+ />
         <div className="header__cart">
          {location.pathname !=='/cart' && <Link to="/cart" className="button button--cart">
             <span>{totalPrice}</span>

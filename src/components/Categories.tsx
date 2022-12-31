@@ -1,6 +1,11 @@
+
 import React from 'react';
 
-const Categories = ({value, onClickCat}) => {
+type CategoriesProps = {
+  value: number
+  onClickCat: any
+} ;
+const Categories: React.FC<CategoriesProps> = ({value, onClickCat}) => {
   // const [activeIndex, setActiveIndex] = React.useState(0);
   // рендиринг списка
   const categories = [

@@ -12,7 +12,7 @@ import { fetchPizzas, selectPizzasData } from '../redux/slices/pizzasSlice';
 
 
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSearch = React.useRef(false);
@@ -23,11 +23,11 @@ const Home = () => {
 
 
   // const [isLoading, setIsLoading] = React.useState(true);
-  const onClickCategory = (i) => {
+  const onClickCategory = (i:number) => {
     dispatch(setCategoryId(i));
   }
 
-  const onChangePage = (number) => {
+  const onChangePage = (number:number) => {
     dispatch(setCurrentPage(number));
   }
 
@@ -49,7 +49,9 @@ const Home = () => {
     // promise преврщает синхроный код в асинхроный. Ахион возвращает промис 
     // отлавливаем ошибки
 
-    dispatch(fetchPizzas({
+    dispatch(
+      //@ts-ignore
+      fetchPizzas({
       currentPage, category, sortBy, order, search
     }),
     );
@@ -93,13 +95,13 @@ const Home = () => {
 
 
 
-  const pizzaItems = items.filter(obj => {
+  const pizzaItems = items.filter((obj:any) => {
     if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
       return true;
     }
     return false;
   }
-  ).map(obj => <Link key={obj.id} to={`/pizza/${obj.id}`}> <PizzaBlock
+  ).map((obj:any) => <Link key={obj.id} to={`/pizza/${obj.id}`}> <PizzaBlock
     {...obj} /></Link>);
   const sceleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
   

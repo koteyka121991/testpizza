@@ -3,8 +3,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, selectCartItemById } from '../../redux/slices/cartSlice';
+
+type PizzaBlockProps = {
+  id: string;
+    title: string;
+    price:number;  
+    imageUrl: string; 
+    sizes: number[];
+    types:number[];
+} ;
 //  Props это объект коорый харнит в себе какие то атрибуты которые мы передаем компонентам
-const PizzaBlock = ({id, title, price, imageUrl, sizes, types }) => {
+const PizzaBlock:React.FC<PizzaBlockProps> = ({id, title, price, imageUrl, sizes, types }) => {
   const dispatch = useDispatch();
   const cartItem = useSelector(selectCartItemById(id))
   // const {items, totalPrice } = useSelector(state=>state.cart);
