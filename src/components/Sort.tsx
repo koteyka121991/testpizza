@@ -2,8 +2,8 @@
 // imr сокращеный импорт реакта
 // блогодря стэйту мы ожим наш компонент, буду проиходить манипуляции с ним
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import {  selectSort, setSort, SortPropertyEnum } from '../redux/slices/filterSlice';
+import { useDispatch} from 'react-redux'
+import {  FilterSort,  setSort, SortPropertyEnum } from '../redux/slices/filterSlice';
 
 
 
@@ -16,6 +16,10 @@ type PopupClick = MouseEvent& {
   path: Node[];
 };
 
+type SortProps = {
+  value:FilterSort
+}
+
 export const list: ListItem[]=[
   {name: 'популярности (DESC)', sortProperty: SortPropertyEnum.RATING_DESC},
   {name: 'популярности(ASC)', sortProperty: SortPropertyEnum.RATING_ASC},
@@ -25,9 +29,10 @@ export const list: ListItem[]=[
   {name: 'алфавиту (ASC)', sortProperty: SortPropertyEnum.TITLE_ASC}
   
 ]
-const Sort = () => {
+const Sort: React.FC<SortProps> = React.memo(({value}) => {
+ 
   const dispatch = useDispatch();
-  const sort = useSelector(selectSort);
+  // const sort = useSelector(selectSort);
 // реализуем логику скрытия попапа
 const sortRef = React.useRef<HTMLDivElement>(null);
 
@@ -80,7 +85,7 @@ return () => {
         <b>Сортировка по:</b>
         {/* !openPopup !переварачивает знчение (не) */}
         {/* окрываем попап */}
-        <span onClick={() => setOpenPopup(!openPopup)}>{sort.name}</span>
+        <span onClick={() => setOpenPopup(!openPopup)}>{value.name}</span>
       </div>
       {/* Логическое И (&&) вычисляет операнды(значения) слева направо, возвращая сразу 
               значение первого попавшего ложноподобного операнда; если все значения 
@@ -99,7 +104,7 @@ return () => {
             {/* выбор сортировки */}
             {list.map((obj, i) => (
               <li key={i} onClick={() => onClickListItem(obj)} 
-              className={sort.sortProperty === obj.sortProperty ? 'active' : ''}>{obj.name}</li>
+              className={value.sortProperty === obj.sortProperty ? 'active' : ''}>{obj.name}</li>
             ))}
             {/* <li className="active">популярности</li>
             <li>цене</li>
@@ -124,5 +129,5 @@ return () => {
        */}
     </div>
   )
-}
+})
 export default Sort;

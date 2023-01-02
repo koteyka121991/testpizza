@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 type CategoriesProps = {
   value: number;
   onClickCat: (i: number)=> void;
@@ -14,10 +15,10 @@ const categories = [
   'Острые',
   'Закрытые'
 ]
-const Categories: React.FC<CategoriesProps> = ({value, onClickCat, getCategories}) => {
+const Categories: React.FC<CategoriesProps> =  React.memo(({value, onClickCat}) => {
   // const [activeIndex, setActiveIndex] = React.useState(0);
-  
-  getCategories(categories);
+
+  // getCategories(categories);
   // const onClickCategory = (index) => {
   //   // функция клика по категориям
   //   setActiveIndex(index);
@@ -40,5 +41,5 @@ const Categories: React.FC<CategoriesProps> = ({value, onClickCat, getCategories
       </ul>
     </div>
   )
-}
+})
 export default Categories;

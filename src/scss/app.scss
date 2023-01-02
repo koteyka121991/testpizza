@@ -123,6 +123,7 @@ body {
     align-items: center;
   }
 
+
   .content__title {
     display: flex;
     align-items: center;
@@ -212,6 +213,10 @@ body {
         color: #8d8d8d;
       }
     }
+   :disabled {
+      opacity: 0.4;
+      transform: none;
+    }
 
     &-count {
       display: flex;
@@ -225,6 +230,7 @@ body {
             display: none;
           }
         }
+       
       }
 
       b {

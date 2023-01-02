@@ -24,9 +24,9 @@ const Home: React.FC = () => {
 
 
   // const [isLoading, setIsLoading] = React.useState(true);
-  const onClickCategory = (i: number) => {
+  const onClickCategory = React.useCallback((i: number) => {
     dispatch(setCategoryId(i));
-  }
+  }, [])
 
   const onChangePage = (number: number) => {
     dispatch(setCurrentPage(number));
@@ -61,43 +61,12 @@ const Home: React.FC = () => {
     );
     window.scrollTo(0, 0)
   };
-
-  // React.useEffect(() => {
-  //   if (isMounted.current) {
-  //     const params = {
-  //       categoryId: categoryId > 0 ? categoryId : null,
-  //       sortProperty: sort.sortProperty,
-  //       currentPage
-  //     };
-  //     const queryString = qs.stringify(params, { skipNulls: true });
-  //     navigate(`/?${queryString}`);
-  //   }
-  //   if (!window.location.search) {
-  //     dispatch(fetchPizzas({} as SearchPizzaParams));
-  //   }
-  // }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+  
 
 
   React.useEffect(() => {
     getPizzas();
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
-
-
-  // React.useEffect(() => {
-  //   if (window.location.search) {
-  //     const params = (window.location.search.substring(1)) as unknown as SearchPizzaParams;
-  //     const sort = list.find((obj) => obj.sortProperty === params.sortBy)
-  //     dispatch(setFilters({
-  //       searchValue: params.search,
-  //       categoryId: Number(params.category),
-  //       currentPage: Number(params.currentPage),
-  //       sort: sort || list[0],
-  //     }));
-  //     isMounted.current = true;
-  //   }
-  // }, []);
-
-
 
 
 
@@ -109,7 +78,7 @@ const Home: React.FC = () => {
   }
   ).map((obj: any) => 
  
-  <PizzaBlock
+  <PizzaBlock key={obj.id}
     {...obj} />
 
     );
@@ -121,7 +90,7 @@ const Home: React.FC = () => {
         <div className="content__top">
 
           <Categories value={categoryId} onClickCat={onClickCategory} getCategories={() => { }} />
-          <Sort
+          <Sort value={sort}
           />
         </div>
         <h2 className="content__title">Все пиццы</h2>
